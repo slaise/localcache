@@ -1,12 +1,5 @@
 /* Package localcache provides an in-memory and thread-safe cache storage
-
-Example
-
-	cache, _ := NewCache()
-	cache.Put("a", 1)
-	a, _ := cache.Get("a")
-
-*/
+ */
 package localcache
 
 import (
@@ -202,6 +195,9 @@ func stopCleaner(c *Cache) {
 }
 
 func NewCache(size ...int) (*Cache, error) {
+	if size != nil {
+		return newCache(size, DEFAULT_EXPIRATION, DEFAULT_CLEAN_DURATION)
+	}
 	return newCache(DEFAULT_CAP, DEFAULT_EXPIRATION, DEFAULT_CLEAN_DURATION)
 }
 
