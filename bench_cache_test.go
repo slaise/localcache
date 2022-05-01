@@ -1,4 +1,4 @@
-package go-localcache
+package localcache
 
 import (
 	"fmt"
