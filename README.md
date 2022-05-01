@@ -2,7 +2,7 @@
 
 A local cache product using Go. The code implements a simple in-memory cache with limit size, and supports ttl.
 
-## Quick Start?
+## Quick Start
 
 ```Go
 cache, err := NewCache()
