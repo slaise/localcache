@@ -1,3 +1,12 @@
+/* Package localcache provides an in-memory and thread-safe cache storage
+
+Example
+
+	cache, _ := NewCache()
+	cache.Put("a", 1)
+	a, _ := cache.Get("a")
+
+*/
 package localcache
 
 import (
@@ -8,12 +17,20 @@ import (
 )
 
 const (
-	DEFAULT_EXPIRATION     = 10 * time.Minute
+	// Const DEFAULT_EXPIRATION defines the default ttl time period for all keys
+	DEFAULT_EXPIRATION = 10 * time.Minute
+
+	// Const DEFAULT_CLEAN_DURATION defines the default period of the auto clean
 	DEFAULT_CLEAN_DURATION = 10 * time.Minute
-	DEFAULT_CAP            = 1024
+
+	// Const DEFAULT_CAP defines the default size of the cache
+	DEFAULT_CAP = 1024
+
+	// Const DEFAULT_LRU_CLEAN_SIZE defines the default number of keys that are cleaned during auto clean
 	DEFAULT_LRU_CLEAN_SIZE = 20
 )
 
+// Cache defines the structure of the Cache.
 type Cache struct {
 	defaultExpiration time.Duration
 	elements          map[string]Elem
@@ -24,6 +41,8 @@ type Cache struct {
 	cleaner           *cleaner
 }
 
+// Elem defines the item of the Cache value.
+// It contains K as Key, V as value, Expiration and LastHit
 type Elem struct {
 	K          string
 	V          interface{}
@@ -150,7 +169,9 @@ func (c *Cache) Flush() error {
 	return nil
 }
 
-// Used in cleaning job
+// RemoveExpired triggers the a clean for expired keys
+//
+// It is thread-safe.
 func (c *Cache) RemoveExpired() {
 	now := time.Now().UnixNano()
 	c.lock.Lock()
@@ -180,7 +201,7 @@ func stopCleaner(c *Cache) {
 	c.cleaner.stop <- true
 }
 
-func NewCache() (*Cache, error) {
+func NewCache(size ...int) (*Cache, error) {
 	return newCache(DEFAULT_CAP, DEFAULT_EXPIRATION, DEFAULT_CLEAN_DURATION)
 }
 
