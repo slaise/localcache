@@ -48,6 +48,11 @@ type cleaner struct {
 	stop     chan bool
 }
 
+// Get get the Elem.v from the cache if key exists.
+//
+// It updates both lastHit and expire.
+//
+// Return interface and error
 func (c *Cache) Get(k string) (v interface{}, err error) {
 	ele := c.pool.Get()
 	if item, ok := ele.(Elem); ok {
@@ -67,6 +72,7 @@ func (c *Cache) Get(k string) (v interface{}, err error) {
 	return nil, nil
 }
 
+// Put puts key and value into the cache
 func (c *Cache) Put(k string, v interface{}) error {
 	expire := time.Now().Add(DEFAULT_EXPIRATION).UnixNano()
 	lastHit := time.Now().UnixNano()
@@ -138,6 +144,9 @@ func (c *Cache) removeLeastVisited() error {
 	return nil
 }
 
+// Remove remove key from the cache
+//
+// Return isFound and error
 func (c *Cache) Remove(k string) (isFound bool, err error) {
 	c.lock.Lock()
 	defer c.lock.Unlock()
@@ -154,6 +163,7 @@ func (c *Cache) Remove(k string) (isFound bool, err error) {
 	return false, nil
 }
 
+// Flush cleans up the cache
 func (c *Cache) Flush() error {
 	c.lock.Lock()
 	defer c.lock.Unlock()
@@ -194,6 +204,9 @@ func stopCleaner(c *Cache) {
 	c.cleaner.stop <- true
 }
 
+// NewCache defines the cache and accepts size
+//
+// Return cache and error
 func NewCache(size ...int) (*Cache, error) {
 	if size != nil {
 		return newCache(size, DEFAULT_EXPIRATION, DEFAULT_CLEAN_DURATION)
