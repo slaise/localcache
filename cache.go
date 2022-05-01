@@ -1,4 +1,4 @@
-package golang_localcache
+package go_localcache
 
 import (
 	"math/bits"
@@ -96,20 +96,20 @@ func (c *Cache) removeLeastVisited() error {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 
-	var lastTime int64 = 1<<(bits.UintSize-1) - 1  // MaxInt
+	var lastTime int64 = 1<<(bits.UintSize-1) - 1 // MaxInt
 	t := time.Now().UnixNano()
 	lastItems := make([]string, DEFAULT_LRU_CLEAN_SIZE)
 	liCount := 0
 	full := false
 
 	for k, v := range c.elements {
-		if v.Expiration > t {  // not expiring
+		if v.Expiration > t { // not expiring
 			atime := v.LastHit
 			if full == false || atime < lastTime {
 				lastTime = atime
 				if liCount < DEFAULT_LRU_CLEAN_SIZE {
 					lastItems[liCount] = k
-					liCount ++
+					liCount++
 				} else {
 					lastItems[0] = k
 					liCount = 1

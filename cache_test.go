@@ -1,4 +1,4 @@
-package golang_localcache
+package go_localcache
 
 import "testing"
 
@@ -15,7 +15,7 @@ func TestCache(t *testing.T) {
 	af, _ := c.Get("yes")
 	if af == nil {
 		t.Error("Should find a value")
-	} else if af.(int) != 1  {
+	} else if af.(int) != 1 {
 		t.Error("Expected 1, actual: ", af.(int))
 	}
 
