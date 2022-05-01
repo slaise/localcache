@@ -1,4 +1,4 @@
-module github.com/slaise/go_localcache/v1
+module github.com/slaise/localcache/v1
 
 go 1.18
 
