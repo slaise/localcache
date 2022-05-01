@@ -1,8 +1,8 @@
 # Golang-localcache
 
-A local cache product using Go. 
+A local cache product using Go. The code implements a simple in-memory cache with limit size, and supports ttl.
 
-## How to use?
+## Quick Start?
 
 ```Go
 cache, err := NewCache()
