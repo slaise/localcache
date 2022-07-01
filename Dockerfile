@@ -9,9 +9,9 @@ COPY main.go main.go
 # Run go mod
 RUN go mod download
 # Build Go
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build main.go
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-w -s" main.go
 
-FROM debian AS runner
+FROM scratch AS runner
 WORKDIR /go/localcache
 # COPY executable file from previous builder stage
 COPY --from=builder /workspace/main .
