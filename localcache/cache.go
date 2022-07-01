@@ -207,9 +207,9 @@ func stopCleaner(c *Cache) {
 // NewCache defines the cache and accepts size
 //
 // Return cache and error
-func NewCache(size ...int) (*Cache, error) {
-	if size != nil {
-		return newCache(size, DEFAULT_EXPIRATION, DEFAULT_CLEAN_DURATION)
+func NewCache(params ...int) (*Cache, error) {
+	if params != nil && len(params) > 0 {
+		return newCache(int64(params[0]), DEFAULT_EXPIRATION, DEFAULT_CLEAN_DURATION)
 	}
 	return newCache(DEFAULT_CAP, DEFAULT_EXPIRATION, DEFAULT_CLEAN_DURATION)
 }
